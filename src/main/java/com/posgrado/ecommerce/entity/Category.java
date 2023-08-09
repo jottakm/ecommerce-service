@@ -19,7 +19,10 @@ public class Category {
   @GeneratedValue
   @JdbcTypeCode(Types.VARCHAR)
   private UUID id;
-  @Column(nullable = false, length = 30)
+  @Column(
+      nullable = false,
+      length = 30
+  )
   private String name;
   private String description;
 

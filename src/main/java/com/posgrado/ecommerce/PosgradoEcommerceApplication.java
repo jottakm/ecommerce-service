@@ -17,7 +17,7 @@ public class PosgradoEcommerceApplication {
   public static void main(String[] args) {
     SpringApplication.run(PosgradoEcommerceApplication.class, args);
   }
-
+/*
   @Bean
   public CommandLineRunner setData(
       CategoryRepository categoryRepository,
@@ -58,6 +58,6 @@ public class PosgradoEcommerceApplication {
       roleRepository.save(role);
       roleRepository.save(roleAdmin);
     };
-  }
+  }*/
 
 }

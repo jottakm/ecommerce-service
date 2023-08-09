@@ -21,7 +21,10 @@ public class Product {
   @GeneratedValue
   @JdbcTypeCode(Types.VARCHAR)
   private UUID id;
-  @Column(length = 50, nullable = false)
+  @Column(
+      length = 50,
+      nullable = false
+  )
   private String name;
   private String description;
   private String imageUrl;
