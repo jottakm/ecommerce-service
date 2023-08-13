@@ -1,8 +1,10 @@
 package com.posgrado.ecommerce.service;
 
+import com.posgrado.ecommerce.dto.PageDto;
 import com.posgrado.ecommerce.dto.ProductDto;
 import com.posgrado.ecommerce.entity.Category;
 import com.posgrado.ecommerce.entity.Product;
+import com.posgrado.ecommerce.mapper.ProductMapper;
 import com.posgrado.ecommerce.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.UUID;
@@ -17,20 +19,13 @@ public class ProductServiceImpl implements ProductService {
 
   private ProductRepository productRepository;
   private CategoryService categoryService;
+  private ProductMapper productMapper;
 
   @Override
   public Product save(ProductDto dto) {
     Category category = categoryService.getById(dto.getCategoryId());
-
-    Product product = new Product();
-    product.setName(dto.getName());
-    product.setDescription(dto.getDescription());
-    product.setPrice(dto.getPrice());
-    product.setStock(dto.getStock());
-    product.setActive(dto.isActive());
-    product.setImageUrl(dto.getImageUrl());
+    Product product = productMapper.fromDto(dto);
     product.setCategory(category);
-
     return productRepository.save(product);
   }
 
@@ -46,8 +41,9 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Page<Product> getProductsFiltered(Double minPrice, Double maxPrice, Pageable pageable) {
-    return productRepository.findByPriceBetween(minPrice, maxPrice, pageable);
+  public PageDto<Product> getProductsFiltered(Double minPrice, Double maxPrice, Pageable pageable) {
+    Page<Product> page = productRepository.findByPriceBetween(minPrice, maxPrice, pageable);
+    return productMapper.fromEntity(page);
   }
 
 }

@@ -1,5 +1,6 @@
 package com.posgrado.ecommerce.controller;
 
+import com.posgrado.ecommerce.dto.PageDto;
 import com.posgrado.ecommerce.dto.ProductDto;
 import com.posgrado.ecommerce.entity.Product;
 import com.posgrado.ecommerce.service.ProductService;
@@ -43,7 +44,8 @@ public class ProductController {
   }
 
   @GetMapping("/pageable")
-  public ResponseEntity<Page<Product>> getProductsPageable(@RequestParam int page, @RequestParam int size) {
+  public ResponseEntity<Page<Product>> getProductsPageable(@RequestParam int page,
+      @RequestParam int size) {
     Pageable pageable = PageRequest.of(page, size);
     Page<Product> productPage = productService.getProduct(pageable);
     return ResponseEntity
@@ -53,7 +55,7 @@ public class ProductController {
   }
 
   @GetMapping
-  public ResponseEntity<Page<Product>> getProductsFiltered(
+  public ResponseEntity<PageDto<Product>> getProductsFiltered(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size,
       @RequestParam(required = false) Double minPrice,
@@ -62,18 +64,18 @@ public class ProductController {
       @RequestParam(defaultValue = "asc") String sortOrder
   ) {
 
-    if(minPrice == null) {
+    if (minPrice == null) {
       minPrice = Double.MIN_VALUE;
     }
 
-    if(maxPrice == null) {
+    if (maxPrice == null) {
       maxPrice = Double.MAX_VALUE;
     }
 
     Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
     Pageable pageable = PageRequest.of(page, size, sort);
 
-    Page<Product> productPage = productService.getProductsFiltered(minPrice, maxPrice, pageable);
+    PageDto<Product> productPage = productService.getProductsFiltered(minPrice, maxPrice, pageable);
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(productPage);
