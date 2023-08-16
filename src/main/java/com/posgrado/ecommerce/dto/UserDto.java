@@ -1,5 +1,7 @@
 package com.posgrado.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,7 @@ public class UserDto {
   private String email;
   private String address;
   private String roleName;
+
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String password;
 }
