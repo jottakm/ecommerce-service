@@ -10,11 +10,13 @@ import jakarta.persistence.Table;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "confirmation_tokens")
 public class ConfirmationToken {
 
@@ -33,6 +35,9 @@ public class ConfirmationToken {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
+
+  public ConfirmationToken() {
+  }
 
   public ConfirmationToken(String token, LocalDateTime expiresAt, User user) {
     this.token = token;

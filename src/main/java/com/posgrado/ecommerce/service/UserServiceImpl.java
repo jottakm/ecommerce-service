@@ -38,4 +38,10 @@ public class UserServiceImpl implements UserService {
   public User save(User user) {
     return userRepository.save(user);
   }
+
+  @Override
+  public void enableUser(User user) {
+    user.setEnable(true);
+    userRepository.save(user);
+  }
 }
