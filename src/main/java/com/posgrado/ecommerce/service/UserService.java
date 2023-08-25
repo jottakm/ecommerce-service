@@ -14,4 +14,6 @@ public interface UserService {
 
   void enableUser(User user);
 
+  User findById(UUID id);
+
 }

@@ -4,6 +4,11 @@ import com.posgrado.ecommerce.dto.PageDto;
 import com.posgrado.ecommerce.dto.ProductDto;
 import com.posgrado.ecommerce.entity.Product;
 import com.posgrado.ecommerce.service.ProductService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,21 +25,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Product")
 @AllArgsConstructor
 @RestController
 @RequestMapping("products")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
   private ProductService productService;
 
+  @Operation(
+      summary = "Save a new product"
+  )
+
   @PostMapping
-  public ResponseEntity<Product> save(@RequestBody ProductDto dto) {
+  public ResponseEntity<Product> save(@RequestBody @Valid ProductDto dto) {
     Product productSaved = productService.save(dto);
     return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(productSaved);
   }
 
+  @Operation(
+      summary = "Save a new product"
+  )
   @GetMapping("/{id}")
   public ResponseEntity<Product> getById(@PathVariable UUID id) {
     Product productFound = productService.getById(id);
@@ -43,6 +57,7 @@ public class ProductController {
         .body(productFound);
   }
 
+  @Hidden
   @GetMapping("/pageable")
   public ResponseEntity<Page<Product>> getProductsPageable(@RequestParam int page,
       @RequestParam int size) {
@@ -54,6 +69,9 @@ public class ProductController {
 
   }
 
+  @Operation(
+      summary = "Get filtered products and pagination"
+  )
   @GetMapping
   public ResponseEntity<PageDto<Product>> getProductsFiltered(
       @RequestParam(defaultValue = "0") int page,

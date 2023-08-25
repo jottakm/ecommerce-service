@@ -44,4 +44,10 @@ public class UserServiceImpl implements UserService {
     user.setEnable(true);
     userRepository.save(user);
   }
+
+  @Override
+  public User findById(UUID id) {
+    return userRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("User not found"));
+  }
 }

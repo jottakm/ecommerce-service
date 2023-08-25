@@ -1,9 +1,14 @@
 package com.posgrado.ecommerce.controller;
 
+import com.posgrado.ecommerce.dto.AuthenticationRequest;
+import com.posgrado.ecommerce.dto.AuthenticationResponse;
 import com.posgrado.ecommerce.dto.EmailNotification;
 import com.posgrado.ecommerce.dto.UserDto;
+import com.posgrado.ecommerce.service.AuthenticationService;
 import com.posgrado.ecommerce.service.EmailService;
 import com.posgrado.ecommerce.service.RegistrationService;
+import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +26,7 @@ public class AuthController {
 
   private RegistrationService registrationService;
   private EmailService emailService;
+  private AuthenticationService authenticationService;
 
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody UserDto userDto) {
@@ -30,6 +36,7 @@ public class AuthController {
         .body(message);
   }
 
+  @Hidden
   @PostMapping("/email")
   public String sendEmail() {
     EmailNotification email1 = EmailNotification.builder()
@@ -60,6 +67,16 @@ public class AuthController {
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(message);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<AuthenticationResponse> authenticate(
+      @RequestBody @Valid AuthenticationRequest request) {
+    AuthenticationResponse response = authenticationService.authenticate(request);
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(response);
+
   }
 
 
