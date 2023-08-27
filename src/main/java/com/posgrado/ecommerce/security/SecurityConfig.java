@@ -4,6 +4,7 @@ import com.posgrado.ecommerce.security.jwt.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -33,6 +34,12 @@ public class SecurityConfig {
     http.authorizeHttpRequests(auth -> auth
         .requestMatchers(SWAGGER_WHITE_LIST).permitAll()
         .requestMatchers("/auth/**").permitAll()
+        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+        .requestMatchers(HttpMethod.POST, "/products").hasAuthority("ADMIN")
+        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+        .requestMatchers(HttpMethod.POST, "/orders").hasAuthority("USER")
+        .requestMatchers(HttpMethod.GET, "/orders/**").hasAuthority("USER")
+        .requestMatchers(HttpMethod.GET, "/users/**").hasAuthority("ADMIN")
         .anyRequest().authenticated()
     );
     http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

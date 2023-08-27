@@ -2,6 +2,7 @@ package com.posgrado.ecommerce.controller;
 
 import com.posgrado.ecommerce.dto.UserDto;
 import com.posgrado.ecommerce.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class UserController {
   private UserService userService;
 
   @GetMapping("/{id}")
+  @SecurityRequirement(name = "bearerAuth")
   public ResponseEntity<UserDto> getById(@PathVariable UUID id) {
     UserDto userFound = userService.getById(id);
     return ResponseEntity

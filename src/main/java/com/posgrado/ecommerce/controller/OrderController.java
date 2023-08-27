@@ -2,6 +2,7 @@ package com.posgrado.ecommerce.controller;
 
 import com.posgrado.ecommerce.dto.OrderDto;
 import com.posgrado.ecommerce.service.OrderService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("orders")
 @AllArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class OrderController {
 
   private OrderService orderService;

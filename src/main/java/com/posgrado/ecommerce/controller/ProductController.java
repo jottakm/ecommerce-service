@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("products")
-@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
   private ProductService productService;
@@ -39,6 +38,7 @@ public class ProductController {
   )
 
   @PostMapping
+  @SecurityRequirement(name = "bearerAuth")
   public ResponseEntity<Product> save(@RequestBody @Valid ProductDto dto) {
     Product productSaved = productService.save(dto);
     return ResponseEntity
